@@ -41,6 +41,8 @@ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 export PUB_HOSTED_URL=https://pub.flutter-io.cn
 ```
 
+完整的代理设置方法参考 [在中国网络环境下使用 Flutter](./docs/flutter-in-china.md) 章节
+
 ### 1.2. 使用命令行
 
 - 通过 `flutter doctor` 命令可以检查工具链的安装情况
