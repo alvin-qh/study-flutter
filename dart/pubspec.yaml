@@ -1,0 +1,13 @@
+name: dart
+
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.3 <4.0.0'
+
+# dependencies:
+
+dev_dependencies:
+  test: ^1.24.3
