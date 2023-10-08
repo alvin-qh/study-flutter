@@ -174,7 +174,7 @@ macOS 下开发桌面应用, 需要安装 [Xcode](https://developer.apple.com/xc
 通过如下命令创建 Flutter 项目
 
 ```bash
-flutter create <项目名称>
+flutter create --org <package-name> <project-name>
 ```
 
 此命令会以 `<项目名称>` 创建目录, 目录中包含了范例代码和各个平台的编译命令
