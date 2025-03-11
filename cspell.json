@@ -1,0 +1,14 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "allprojects",
+    "appbar",
+    "armeabi",
+    "buildscript",
+    "jcenter",
+    "subprojects"
+  ],
+  "flagWords": [],
+  "enabled": true
+}
