@@ -7,7 +7,8 @@
   - [2. 安装工具链](#2-安装工具链)
     - [2.1. Android SDK](#21-android-sdk)
       - [2.1.1. 安装 Android Studio](#211-安装-android-studio)
-      - [2.1.2. 安装 Android Command line tools](#212-安装-android-command-line-tools)
+      - [2.1.2. 安装 Android Commandline Tools](#212-安装-android-commandline-tools)
+      - [2.1.3. 安装 Android 模拟器](#213-安装-android-模拟器)
     - [2.2. iOS](#22-ios)
       - [2.2.1. 安装 XCode](#221-安装-xcode)
       - [2.2.2. 配置 iOS 模拟器](#222-配置-ios-模拟器)
@@ -22,23 +23,26 @@
 
 ## 1. 安装 Flutter
 
-从 [官方网站](https://docs.flutter.dev/release/archive) 下载各个平台的二进制安装包 (或者通过 [中文网站](https://flutter.cn/docs/release/archive) 下载)
+从 [官方网站](https://docs.flutter.dev/release/archive) 下载各个平台的二进制安装包 (或者通过 [中文网站](https://flutter.cn/docs/release/archive) 以及 [清华镜像站](https://mirrors.tuna.tsinghua.edu.cn/flutter/flutter_infra/releases/stable/) 下载)
 
-将下载的二进制包解压到任意位置的 `flutter` 目录下 (例如: `C:\flutter`)
+将下载的二进制包解压到任意位置的 `flutter` 目录下 (例如: `%USERPROFILE%\sdk\flutter` 或 `$HOME/sdk/flutter/`)
 
 ### 1.1. 环境变量
 
 设置 `PATH` 环境变量 (以 Linux 为例)
 
 ```bash
-export PATH="$PATH:$HOME/flutter/bin"
+export PATH="$PATH:$HOME/sdk/flutter/bin"
 ```
 
 设置国内代理
 
 ```bash
-export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
-export PUB_HOSTED_URL=https://pub.flutter-io.cn
+export PUB_HOSTED_URL="https://pub.flutter-io.cn"
+# export PUB_HOSTED_URL="https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+
+export FLUTTER_STORAGE_BASE_URL="https://storage.flutter-io.cn"
+# export FLUTTER_STORAGE_BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/flutter"
 ```
 
 完整的代理设置方法参考 [在中国网络环境下使用 Flutter](./docs/flutter-in-china.md) 章节
@@ -50,7 +54,7 @@ export PUB_HOSTED_URL=https://pub.flutter-io.cn
 - 通过 `flutter config` 可以对 Flutter 进行设置, 例如
 
   ```bash
-  flutter config --android-sdk ~/android-sdk # 设置 Android SDK 的安装目录
+  flutter config --android-sdk ~/sdk/android # 设置 Android SDK 的安装目录
   flutter config --no-analytics # 取消使用分析数据的上报
   ```
 
@@ -68,16 +72,16 @@ export PUB_HOSTED_URL=https://pub.flutter-io.cn
 
 也可以直接 [下载](https://developer.android.com/studio#downloads) Command line tools, 通过命令行安装
 
-#### 2.1.2. 安装 Android Command line tools
+#### 2.1.2. 安装 Android Commandline Tools
 
-从 [官方网站](https://developer.android.com/studio#downloads) 下载最新的二进制文件, 解压缩到任意路径的 `android-sdk/cmdline-tools/latest` 路径下 (注意, 如果不是该路径, 则需要通过 `sdkmanager --sdk_root` 命令设置正确的路径)
+从 [官方网站](https://developer.android.com/studio#downloads) 下载最新的二进制文件, 解压缩到任意路径的 `../cmdline-tools/latest` 路径下 (例如 `$HOME/sdk/android/cmdline-tools/latest`. 注意, 如果不是该路径, 则需要通过 `sdkmanager --sdk_root` 命令设置正确的路径)
 
 注意: 解压路径务必是当前用户有访问权限的路径, `sdkmanager` 不支持和 `sudo` 等命令一起使用
 
-解压后, 配置如下的环境变量 (假设解压到 `$HOME` 路径下)
+解压后, 配置如下的环境变量 (假设解压到 `$HOME/sdk` 路径下)
 
 ```bash
-export ANDROID_HOME="$HOME/android-sdk"
+export ANDROID_HOME="$HOME/sdk/android"
 export ANDROID_SDK_ROOT=${ANDROID_HOME}
 export PATH="$PATH:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin"
 ```
@@ -94,8 +98,8 @@ yes | sdkmanager --licenses
 sdkmanager --install \
     "platform-tools" \
     "emulator" \
-    "platforms;android-33" \
-    "build-tools;30.0.3" \
+    "platforms;android-35" \
+    "build-tools;35.0.1" \
     "patcher;v4"
 ```
 
@@ -103,7 +107,49 @@ sdkmanager --install \
 >
 > 也可以暂时不安装 Android SDK, 当为 Android 编译 Flutter 应用时, 会自动下载合适的版本
 
+安装完毕后, 可通过如下命令检测安装结果
+
+```bash
+sdkmanager --list_installed
+```
+
 注意, Android 环境依赖于 OpenJDK 和 Gradle 工具
+
+#### 2.1.3. 安装 Android 模拟器
+
+如果使用 Android Studio, 则可通过可视化界面进行设置, 参考: <https://developer.android.google.cn/studio/run/managing-avds?hl=zh-cn>
+
+如果通过命令行创建, 则可按如下方式进行:
+
+STEP 1: 安装合适的系统镜像
+
+```bash
+sdkmanager --install "system-images;android-35;default;x86_64"
+```
+
+STEP 2: 创建 AVD
+
+```bash
+avdmanager create avd -n default -k "system-images;android-35;default;x86_64"
+```
+
+其中 `-n` 表示 AVD 的名称, 之后启动模拟器需要这个名称
+
+STEP 3: 启动模拟器
+
+```bash
+$HOME/sdk/android/emulator/emulator "@default"
+```
+
+对于 Linux 系统 (例如 Ubuntu), 要启动模拟器, 需要以下组件支持:
+
+```bash
+# KVM 虚拟机
+sudo apt install qemu-kvm
+
+# 其它依赖库
+apt install libpulse-dev libnss3 libxkbfile-dev
+```
 
 ### 2.2. iOS
 
@@ -184,17 +230,20 @@ flutter create --org <package-name> <project-name>
 进入项目的 `android` 目录, 编辑 `build.gradle` 文件, 将其中的 `repositories` 内容改为如下地址
 
 ```gradle
-repositories {
-  maven {
-    url "https://maven.aliyun.com/repository/google"
-  }
-  maven {
-    url "https://maven.aliyun.com/repository/public"
-  }
-  maven {
-    url "https://maven.aliyun.com/repository/jcenter"
-  }
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io" }
+    }
 }
+```
+
+需要为 gradle wrapper 设置镜像, 以提升在国内访问的速度, 编辑 `gradle/wrapper/gradle-wrapper.properties` 文件, 将其中的 `distributionUrl` 内容改为如下地址
+
+```properties
+distributionUrl=https\://mirrors.aliyun.com/macports/distfiles/gradle/gradle-8.10.2-all.zip
 ```
 
 ### 3.2. 执行项目
@@ -205,6 +254,12 @@ repositories {
 
    ```bash
    flutter test
+   ```
+
+   如果报告无法连接 Websocket 的错误, 则可能是由系统的网络代理造成, 需要配置如下环境变量
+
+   ```bash
+   export NO_PROXY=localhost,127.0.0.1
    ```
 
 2. 连接 Android 模拟器 (或设备)
