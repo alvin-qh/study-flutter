@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         maven { setUrl("https://maven.aliyun.com/repository/public") }
+        maven { setUrl("https://maven.aliyun.com/repository/central") }
         maven { setUrl("https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io") }
         google()
         mavenCentral()
@@ -10,6 +11,7 @@ buildscript {
 allprojects {
     repositories {
         maven { setUrl("https://maven.aliyun.com/repository/public") }
+        maven { setUrl("https://maven.aliyun.com/repository/central") }
         maven { setUrl("https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io") }
         google()
         mavenCentral()

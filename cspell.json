@@ -2,27 +2,33 @@
   "version": "0.2",
   "language": "en",
   "words": [
+    "aliyun",
     "allprojects",
-<<<<<<< HEAD
     "appbar",
-    "armeabi",
-    "buildscript",
-    "jcenter",
-    "subprojects"
-=======
     "appbundle",
+    "armeabi",
     "avdmanager",
+    "buildlog",
     "buildscript",
     "cmdline",
+    "cupertino",
+    "distfiles",
+    "dists",
     "jcenter",
+    "jvmargs",
     "libnss",
     "libpulse",
     "libstdc",
     "libxkbfile",
+    "macports",
+    "Metaspace",
+    "Schyler",
     "sdkmanager",
+    "Subproject",
     "subprojects",
+    "swiftpm",
+    "Symbolication",
     "USERPROFILE"
->>>>>>> 3ea9b2b ([basic] update demo)
   ],
   "flagWords": [],
   "enabled": true

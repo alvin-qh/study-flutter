@@ -45,7 +45,7 @@ export FLUTTER_STORAGE_BASE_URL="https://storage.flutter-io.cn"
 # export FLUTTER_STORAGE_BASE_URL="https://mirrors.tuna.tsinghua.edu.cn/flutter"
 ```
 
-完整的代理设置方法参考 [在中国网络环境下使用 Flutter](./docs/flutter-in-china.md) 章节
+完整的代理设置方法参考 [在中国网络环境下使用 Flutter](./docs/flutter-in-china.md) 章节, 相关清华镜像站地址参考 <https://mirrors.tuna.tsinghua.edu.cn/help/flutter/>
 
 ### 1.2. 使用命令行
 
@@ -95,12 +95,7 @@ yes | sdkmanager --licenses
 安装所需的 SDK 和工具
 
 ```bash
-sdkmanager --install \
-    "platform-tools" \
-    "emulator" \
-    "platforms;android-35" \
-    "build-tools;35.0.1" \
-    "patcher;v4"
+sdkmanager --install "platform-tools" "emulator" "platforms;android-35" "build-tools;35.0.1"
 ```
 
 > 也可以通过 `sdkmanager --list` 查看所有的 SDK 和工具版本, 安装合适的版本
@@ -231,13 +226,21 @@ flutter create --org <package-name> <project-name>
 
 ```gradle
 allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io" }
-    }
+  repositories {
+    maven { url "https://maven.aliyun.com/repository/public" }
+    maven { url "https://mirrors.tuna.tsinghua.edu.cn/flutter/download.flutter.io" }
+    google()
+    mavenCentral()
+  }
 }
+```
+
+或者通过修改 `gradle.properties` 文件, 添加项目全局的 `maven` 镜像地址
+
+```properties
+repositories.grails.default = https://maven.aliyun.com/repository/public
+repositories.grails.default.1 = https://mirrors.tuna.tsinghua.edu.cn/maven/repos/public
+repositories.grails.default.2 = https://repo.maven.apache.org/maven2
 ```
 
 需要为 gradle wrapper 设置镜像, 以提升在国内访问的速度, 编辑 `gradle/wrapper/gradle-wrapper.properties` 文件, 将其中的 `distributionUrl` 内容改为如下地址
@@ -273,22 +276,31 @@ distributionUrl=https\://mirrors.aliyun.com/macports/distfiles/gradle/gradle-8.1
    ```bash
    flutter devices
 
-   2 connected devices:
+   Found 3 connected devices:
 
-   Subsystem for Android TM (mobile) • 127.0.0.1:58526 • android-x64 • Android 13 (API 33)
-   Linux (desktop)                   • linux           • linux-x64   • Ubuntu 22.04.3 LTS
+   Android SDK built for x86 64 (mobile) • emulator-5554 • android-x64    • Android 15 (API 35) (emulator)
+   Linux (desktop)                       • linux         • linux-x64      • Ubuntu 24.04.2 LTS 6.6.75.1-microsoft-standard-WSL2
+   Chrome (web)                          • chrome        • web-javascript • Opening in existing browser session.
    ```
 
 4. 选择合适的设备启动 Flutter 应用
 
+   通过设备列表标为 `•` 的设备名称, 即可在指定设备上启动 Flutter 应用
+
    ```bash
-   flutter -d Linux run
+   flutter -d "linux" run
    ```
 
    或
 
    ```bash
-   flutter -d "Subsystem for Android TM" run
+   flutter -d "emulator-5554" run
+   ```
+
+   如果启动时提示 Android 的 NDK 未安装, 可通过 `sdkmanager` 命令, 根据提示的 NDK 版本安装 NDK
+
+   ```bash
+   sdkmanager --install "ndk;26.3.11579264"
    ```
 
 5. 查看日志
